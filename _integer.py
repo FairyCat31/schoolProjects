@@ -60,6 +60,7 @@ def integer29():
     s = (a//c)*(b//c)
     print(f"Квадратов {s} и площадь не занята {S-(s*c**2)}")
 
+
 def integer30():
     s = int(input("Введите год > "))
     print(f"Это {int(str(s-1)[:-2])+1} век")
