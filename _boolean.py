@@ -99,8 +99,10 @@ def bool24():
 
     x1 = (-b + D)/(2*a)
     x2 = (-b - D) / (2 * a)
-
-    print("имеет вещественные корни?", (type(x1)==complex)or(type(x2)==complex))
+    print(x1, x2)
+    x1a = int(x1)
+    x2a = int(x2)
+    print("имеет вещественные корни?", (x1!=x1a)or(x2!=x2a))
 
 def main():
     bool24()
