@@ -79,6 +79,16 @@ def begin35():
     print(f"Растояние = {(V-U)*T}")
 
 
+def begin39():
+    a, b, c = float(input("A = ")), float(input("B = ")), float(input("C = "))
+    D = (b**2 - 4*a*c)**0.5
+
+    x1 = (-b + D)/(2*a)
+    x2 = (-b - D) / (2 * a)
+
+    print(f"{x1=} {x2=}" if x1 <= x2 else f"x1={x2} x2={x1}")
+
+
 def begin40():
     a1, b1, c1 = float(input("A1 = ")), float(input("B1 = ")), float(input("C1 = "))
     a2, b2, c2 = float(input("A2 = ")), float(input("B2 = ")), float(input("C2 = "))
@@ -90,7 +100,7 @@ def begin40():
 
 
 def main():
-    begin34()
+    begin39()
 
 
 if __name__ == "__main__":
