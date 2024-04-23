@@ -93,5 +93,36 @@ def Perim(xA: float, yA: float,
     CA = Leng(xC, yC, xA, yA)
     return AB + BC + CA
 
+
+def Area(xA: float, yA: float,
+          xB: float, yB: float,
+          xC: float, yC: float
+         ) -> float:
+    p = Perim(xA, yA, xB, yB, xC, yC)
+    ab = Leng(xA, yA, xB, yB)
+    ac = Leng(xA, yA, xC, yC)
+    bc = Leng(xB, yB, xC, yC)
+    Sabc = (p*(p-ab)*(p-ac)*(p-bc))**0.5
+
+
+def Dist(xP, yP, xA, yA, xB, yB):
+    SPAB = Area(xP, yP, xA, yA, xB, yB)
+    AB = Leng(xA, yA, xB, yB)
+    return 2 * SPAB / AB
+
+
+def Altitudes(xA, yA, xB, yB, xC, yC):
+
+    a = Leng(xB, yB, xC, yC)
+    b = Leng(xA, yA, xC, yC)
+    c = Leng(xA, yA, xB, yB)
+
+    hA = (2 * (b ** 2 + c ** 2) - a ** 2) ** 0.5 / (2 * b)
+    hB = (2 * (a ** 2 + c ** 2) - b ** 2) ** 0.5 / (2 * a)
+    hC = (2 * (a ** 2 + b ** 2) - c ** 2) ** 0.5 / (2 * c)
+
+    return hA, hB, hC
+
+
 # 1 2 7 9 17 18 24 26 46-49 56 57
 # 58 59 60
