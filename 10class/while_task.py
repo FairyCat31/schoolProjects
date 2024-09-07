@@ -6,6 +6,7 @@ def a_b(func):
 
     return wrapper
 
+
 def a_b(func):
     def wrapper():
         n = int(input("a>"))
