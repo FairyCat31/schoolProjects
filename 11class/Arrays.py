@@ -228,12 +228,11 @@ class ArraysTask:
 
     @staticmethod
     def array79(arr: list) -> list:
-        res = arr.copy()
-        arr_len = len(res)
-        res.insert(0, 0)
-        del res[arr_len]
-        print(res)
-        return res
+        for i in range(1, len(arr)):
+            arr[-i] = arr[-i-1]
+        arr[0] = 0
+        print(arr)
+        return arr
 
     @staticmethod
     def array83(arr: list) -> list:
@@ -287,4 +286,4 @@ if __name__ == "__main__":
     # ArraysTask.array47([3, 1, 4, 65, 654, 35, 65, 3643, 66, 676, 73, 33, 1, 2], 3)
     # ArraysTask.array48([3, 1, 1, 2, 2, 2])
     # ArraysTask.array87([3, 1, 2, 3, 4, 5, 6, 7])
-    ArraysTask.array102([1, 2, 4, 5], 3)
+    ArraysTask.array79([1, 2, 4, 5])
