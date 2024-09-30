@@ -14,62 +14,44 @@ class SubFuncs:
 
 
 class ArraysTask:
-
     @staticmethod
-    def set_n(func):
-        def wrapper(*args, **kwargs):
-            num = int(input("N > "))
-            result: Any = func(n=num, *args, **kwargs)
-            print(result)
-        return wrapper
-
-    @staticmethod
-    @set_n
     def array2(n: int) -> List[int]:
         arr = []
-        for i in range(1, n*2, 2):
-            arr.append(i)
+        for i in range(1, n+1):
+            arr.append(2**i)
         return arr
 
     @staticmethod
-    @set_n
     def array5(n: int) -> List[int]:
-        return [SubFuncs.fibonacci_of(i) for i in range(n)]
+        return [SubFuncs.fibonacci_of(i) for i in range(1, n+1)]
 
     @staticmethod
     def array8(arr: List[int]) -> str:
-        res = ""
+        result = ""
         counter = 0
         for i in arr:
             if i % 2:
                 counter += 1
-                res += f"{i} "
-
-        res += f"k={counter}"
-        print(res)
-        return res
+                result += f"{i} "
+        result += f"count={counter}"
+        return result
 
     @staticmethod
     def array10(arr: List[int]) -> (List[int], List[int]):
-        res = []
-        res2 = []
+        result = []
         for i in arr:
             if i % 2:
-                res2.append(i)
+                result.insert(0, i)
                 continue
-            res.append(i)
-        res2.reverse()
-        print(res)
-        print(res2)
-        return res, res2
+            result.append(i)
+        return result
 
     @staticmethod
     def array11(arr: list, k: int) -> List[Any]:
-        res = []
-        for i in range(k, len(arr), k):
-            res.append(arr[i])
-        print(res)
-        return res
+        result = []
+        for i in range(k-1, len(arr), k):
+            result.append(arr[i])
+        return result
 
     @staticmethod
     def array19(arr: List[int]) -> int:
@@ -77,15 +59,15 @@ class ArraysTask:
         max_arr = arr[9]
         res = 0
         for i in range(1, 9):
-            num = arr[i]
-            if min_arr < num < max_arr:
-                res = num
+            if min_arr < arr[i] < max_arr:
+                res = i+1
 
-        print(res)
         return res
 
     @staticmethod
     def array21(arr: List[int], from_num: int, to_num: int) -> float:
+        if from_num == to_num:
+            return arr[from_num-1]
         nums = 0
         for i in range(from_num - 1, to_num):
             nums += arr[i]
@@ -97,54 +79,49 @@ class ArraysTask:
     def array23(arr: List[int], from_num: int, to_num: int) -> float:
         nums = 0
         counter = 0
-        for i in range(0, from_num - 1):
-            nums += i
+        for i in range(0, from_num-1):
+            nums += arr[i]
             counter += 1
 
         for i in range(to_num, len(arr)):
-            nums += i
+            nums += arr[i]
             counter += 1
-
         res = nums / counter
-        print(res)
+
         return res
 
     @staticmethod
     def array24(arr: List[int]) -> int:
         if len(arr) < 2:
-            print(0)
             return 0
         difference = arr[1] - arr[0]
         for i in range(1, len(arr)):
             if difference != arr[i] - arr[i-1]:
                 difference = 0
                 break
-        print(difference)
         return difference
 
     @staticmethod
     def array27(arr: List[int]) -> int:
-        switch = 1 if arr[0] > 0 else -1
-        for i in arr:
-            if i*switch > 0:
-                switch *= -1
+        switch = 1 if arr[0] > 0 else 0
+        for i in range(1, len(arr)):
+            if switch and arr[i] < 0:
+                switch = 0
                 continue
-            print(i)
-            return i
-
-        print(0)
+            elif not switch and arr[i] > 0:
+                switch = 1
+                continue
+            else:
+                return i+1
         return 0
 
     @staticmethod
     def array29(arr: List[int]) -> int:
-        max_num = None
-        arr.sort()
-        arr.reverse()
-        for i in arr:
-            if i % 2:
-                max_num = i
-                break
-        print(max_num)
+        max_num = arr[0]
+        for i in range(1, len(arr), 2):
+            if arr[i] > max_num:
+                max_num = arr[i]
+
         return max_num
 
     @staticmethod
@@ -153,10 +130,10 @@ class ArraysTask:
         max_n = arr[1]
         difference = abs(r - (min_n+max_n))
         for i in range(1, len(arr)):
-            if abs(r - (arr[i]+arr[i-1])) < difference:
+            new_diff = abs(r - (arr[i]+arr[i-1]))
+            if new_diff < difference:
+                difference = new_diff
                 min_n, max_n = arr[i-1], arr[i]
-
-        print(min_n, max_n)
         return min_n, max_n
 
     @staticmethod
@@ -166,125 +143,115 @@ class ArraysTask:
             if i in nums:
                 continue
             nums.append(i)
-        res = len(nums)
-        print(res)
-        return res
+        return len(nums)
 
     @staticmethod
     def array48(arr: List[int]) -> int:
-        res = -1
+        result = -1
         for i in arr:
             count = arr.count(i)
-            if count > res:
-                res = count
-        print(res)
-        return res
+            if count > result:
+                result = count
+        return result
 
     @staticmethod
     def array52(arr: List[int]) -> List[float | int]:
-        res = []
+        result = []
         for i in arr:
             if i < 5:
-                res.append(i*2)
+                result.append(i * 2)
                 continue
-            res.append(i/2)
-        print(res)
-        return res
+            result.append(i / 2)
+        print(result)
+        return result
 
     @staticmethod
     def array53(arr: List[float | int], arr2: List[float | int]) -> List[int | float]:
-        res = []
+        result = []
         for i in range(len(arr)):
             t = max(arr[i], arr2[i])
-            res.append(t)
-        print(res)
-        return res
+            result.append(t)
+        print(result)
+        return result
 
     @staticmethod
-    def array65(arr: List[int], k: int) -> List[int]:
-        res = list([i*arr[k-1] for i in arr])
-        print(res)
-        return res
+    def array65(arr: List[int], k: int) -> None:
+        mod = arr[k-1]
+        for i in range(len(arr)):
+            arr[i] *= mod
 
     @staticmethod
-    def array68(arr: List[float | int]) -> List[float | int]:
+    def array68(arr: List[float | int]) -> None:
         min_v = min(arr)
         max_v = max(arr)
         min_i = arr.index(min_v)
         max_i = arr.index(max_v)
-        res = arr.copy()
-        res[min_i], res[max_i] = max_v, min_v
-        print(res)
-        return res
+        arr[min_i], arr[max_i] = max_v, min_v
 
     @staticmethod
-    def array69(arr: list) -> list:
-        res = []
+    def array69(arr: list) -> None:
         for i in range(0, len(arr), 2):
-            res.append(arr[i+1])
-            res.append(arr[i])
-        print(res)
-        return res
+            arr[i], arr[i+1] = arr[i+1], arr[i]
 
     @staticmethod
-    def array79(arr: list) -> list:
-        res = arr.copy()
-        arr_len = len(res)
-        res.insert(0, 0)
-        del res[arr_len]
-        print(res)
-        return res
+    def array79(arr: list) -> None:
+        for i in range(len(arr)-1, 0, -1):
+            arr[i] = arr[i-1]
+        arr[0] = 0
 
     @staticmethod
-    def array83(arr: list) -> list:
-        res = arr.copy()
-        last_el_id = len(res)-1
-        last_el = res[last_el_id]
-        del res[last_el_id]
-        res.insert(0, last_el)
-        print(res)
-        return res
+    def array83(arr: list) -> None:
+        last_i = len(arr)-1
+        last = arr[last_i]
+        for i in range(last_i, 0, -1):
+            arr[i] = arr[i-1]
+        arr[0] = last
 
     @staticmethod
-    def array87(arr: list) -> list:
-        arr.sort()
-        print(arr)
-        return arr
+    def array87(arr: list) -> None:
+        num = arr[0]
+        del arr[0]
+        for i in range(len(arr)):
+            if arr[i] > num:
+                arr.insert(i, num)
+                break
 
     @staticmethod
-    def array90(arr: list, k: int) -> list:
+    def array90(arr: list, k: int) -> None:
         del arr[k-1]
-        print(arr)
-        return arr
 
     @staticmethod
-    def array91(arr: list, from_num: int, to_num: int) -> list:
-        for i in range(from_num - 1, to_num):
-            del arr[i]
-        print(arr)
-        return arr
+    def array91(arr: list, from_num: int, to_num: int) -> None:
+        for _ in range(from_num - 1, to_num+1):
+            del arr[from_num-1]
+        print(len(arr), arr)
 
     @staticmethod
-    def array96(arr: list) -> list:
-        res = []
-        for i in arr:
-            if i in res:
+    def array96(arr: list) -> None:
+        mod = 0
+        nums = []
+        for i in range(len(arr)):
+            k = i-mod
+            if arr[k] in nums:
+                del arr[k]
+                mod += 1
                 continue
-            res.append(i)
-        print(res)
-        return res
+            nums.append(arr[k])
 
     @staticmethod
-    def array102(arr: list, k: int) -> list:
+    def array102(arr: list, k: int) -> None:
         arr.insert(k, 0)
-        print(arr)
-        return arr
 
 
 if __name__ == "__main__":
+    pass
     # ArraysTask.array11([3, 4, 65, 654, 35, 65, 3643, 66, 676, 73, 33], 3)
     # ArraysTask.array27([-2, 1, -2, 4, -5, 5, -8])
     # ArraysTask.array47([3, 1, 4, 65, 654, 35, 65, 3643, 66, 676, 73, 33, 1, 2], 3)
     # ArraysTask.array48([3, 1, 1, 2, 2, 2])
     # ArraysTask.array87([3, 1, 2, 3, 4, 5, 6, 7])
-    ArraysTask.array102([1, 2, 4, 5], 3)
+    # ArraysTask.array102([1, 2, 4, 5], 3)
+    # test = [1, 4, 21, 3, 5, -7, 9, 1, 15, 15, 11, -13, 15, 17]
+    # test = [6, -2, 3, 0, 1, 2, 3, 8, 9, -2, 0, 0, 20]
+    # ArraysTask.array102(test, 3)
+    # print(test)
