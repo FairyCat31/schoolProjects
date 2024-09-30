@@ -211,13 +211,13 @@ class StringsTask:
 
     @staticmethod
     def string62(line: str) -> str:
-        f = line.replace("ё", "е").replace("Ё", "Е")
         res = ""
-        for el in f:
-            if 1071 < ord(el) < 1104:
-                s = "а" if ord(el)+1 == 1104 else chr(ord(el)+1) if ord(el) != 1077 else "ж"
-            elif 1040 < ord(el) < 1072:
-                s = "А" if ord(el)+1 == 1072 else chr(ord(el)+1) if ord(el) != 1045 else "Ж"
+        for el in line:
+            i_char = ord(el)
+            if 1071 < i_char < 1104:
+                s = "а" if i_char + 1 == 1104 else chr(i_char + 1) if i_char != 1077 and i_char != 1078 else "ж"
+            elif 1040 < i_char < 1072:
+                s = "А" if i_char+1 == 1072 else chr(i_char+1) if i_char != 1045 and i_char != 1046 else "Ж"
             else:
                 s = el
             res += s
