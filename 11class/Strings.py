@@ -16,7 +16,7 @@ class StringsTask:
 
     @staticmethod
     def string4(n: int) -> str:
-        res = chr(64+n)
+        res = " ".join(chr(i) for i in range(65, 65+n))
         print(res)
         return res
 
@@ -28,14 +28,14 @@ class StringsTask:
             res = "digit"
         elif 65 <= uni <= 90:
             res = "lat"
-        elif 1040 <= uni <= 1071:
+        elif 1040 <= uni <= 1071 or uni == 1025:
             res = "rus"
         print(res)
         return res
 
     @staticmethod
     def string7(line: str) -> (int, int):
-        uni_first, uni_last = ord(line[0]), ord(line[len(line)-1])
+        uni_first, uni_last = ord(line[0]), ord(line[-1])
         print(uni_first, uni_last)
         return uni_first, uni_last
 
@@ -56,13 +56,13 @@ class StringsTask:
 
     @staticmethod
     def string18(line: str) -> str:
-        res = "".join([_.upper() if _.islower() else _.lower() for _ in line])
+        res = line.swapcase()
         print(res)
         return res
 
     @staticmethod
     def string27(n1: int, n2: int, s1: str, s2: str) -> str:
-        res = s1[:n1] + s2[n2+1:]
+        res = s1[:n1] + s2[-n2:]
         print(res)
         return res
 
@@ -80,7 +80,7 @@ class StringsTask:
 
     @staticmethod
     def string32(line: str, line2: str) -> int:
-        res = len(line.split(line2))-1
+        res = line.count(line2)
         print(res)
         return res
 
@@ -92,17 +92,14 @@ class StringsTask:
 
     @staticmethod
     def string36(line: str, line1: str, line2: str) -> str:
-        res = line.replace(line1, line2)
+        res = line.replace(line1, line2, 1)
         print(res)
         return res
 
     @staticmethod
     def string39(line: str) -> str:
         s = line.split(" ")
-        if len(s) < 3:
-            res = line
-        else:
-            res = s[1]
+        res = "" if len(s) == 2 else s[1]
         print(res)
         return res
 
@@ -115,30 +112,18 @@ class StringsTask:
     @staticmethod
     def string42(line: str) -> int:
         parse_arr = line.split()
-        counter = {}
+        res = 0
         for i in parse_arr:
-            ekey = i[0] + i[-1]
-            val = counter.get(ekey)
-            if val is None:
-                val = 0
-            val += 1
-            counter[ekey] = val
-
-        res = max(list(counter.values()))
+            if i[0] == i[-1]:
+                res += 1
         print(res)
         return res
 
     @staticmethod
     def string46(line: str) -> int:
-        parse_arr = line.split()
-        max_length = -1
-        for i in parse_arr:
-            length = len(i)
-            if length > max_length:
-                max_length = length
-
-        print(max_length)
-        return max_length
+        max_l = len(max(line.split(), key=len))
+        print(max_l)
+        return max_l
 
     @staticmethod
     def string47(line: str) -> str:
@@ -148,7 +133,7 @@ class StringsTask:
 
     @staticmethod
     def string53(line: str) -> int:
-        target_symbols = ",.?!;:\'\""
+        target_symbols = [".", "!", "?", ",", ";", ":", "—", "(", ")", "\"", "»", "«"]
         counter = 0
         for i in target_symbols:
             counter += line.count(i)
@@ -158,23 +143,27 @@ class StringsTask:
     @staticmethod
     def string54(line: str) -> (tuple, list):
         b = ("а", "ё", "у", "е", "ы", "о", "э", "я", "и", "ю")
-        c = [0 for _ in b]
+        line = line.lower()
+        counter = 0
         for s in line:
-            f_symbol = s.lower()
-            for index, value in enumerate(b):
-                if value == f_symbol:
-                    c[index] += 1
-                    break
+            if s in b:
+                counter += 1
 
-        print("", *list(f"{b[i]}: {c[i]}\n" for i in range(len(b))))
-        return b, c
+        print(counter)
+        return counter
 
     @staticmethod
-    def string55(line: str) -> int:
-        cleaned_sentence = ''.join(char if char.isalpha() or char.isspace() else '' for char in line)
-        words = cleaned_sentence.split()
-        res = len(max(words, key=len))
-        print(res)
+    def string55(line: str) -> str:
+        from re import split as rsplit
+        words = rsplit(r"[.!?,;:—()\"»« ]", line)
+        max_len = 0
+        res = ""
+        for i in range(len(words)-1, -1, -1):
+            print(words[i])
+            tl = len(words[i])
+            if tl > max_len:
+                max_len = tl
+                res = words[i]
         return res
 
     @staticmethod
@@ -197,15 +186,15 @@ class StringsTask:
 
     @staticmethod
     def string60(line: str) -> str:
-        i = line.replace("/", "\\").split("\\")
-        res = i[1] if len(i) > 2 else "/"
+        i = line.replace("/", "\\").replace("\\\\", "\\", 1).split("\\")
+        res = i[1] if len(i) > 2 else "\\"
         print(res)
         return res
 
     @staticmethod
     def string61(line: str) -> str:
-        i = line.replace("/", "\\").split("\\")
-        res = i[-2] if len(i) > 2 else "/"
+        i = line.replace("/", "\\").replace("\\\\", "\\", 1).split("\\")
+        res = i[-2] if len(i) > 2 else "\\"
         print(res)
         return res
 
@@ -215,9 +204,9 @@ class StringsTask:
         for el in line:
             i_char = ord(el)
             if 1071 < i_char < 1104:
-                s = "а" if i_char + 1 == 1104 else chr(i_char + 1) if i_char != 1077 and i_char != 1078 else "ж"
-            elif 1040 < i_char < 1072:
-                s = "А" if i_char+1 == 1072 else chr(i_char+1) if i_char != 1045 and i_char != 1046 else "Ж"
+                s = "а" if i_char + 1 == 1104 else chr(i_char + 1)
+            elif 1039 < i_char < 1072:
+                s = "А" if i_char+1 == 1072 else chr(i_char+1)
             else:
                 s = el
             res += s
@@ -240,51 +229,82 @@ class StringsTask:
         print(res)
         return res
 
+    # @staticmethod
+    # def string70(line: str) -> int:
+    #     open_brackets = 0
+    #     close_brackets = 0
+    #     for op_b, cl_b in (("(", ")"), ("[", "]"), ("{", "}")):
+    #         for i in line:
+    #             if i == op_b:
+    #                 open_brackets += 1
+    #             elif i == cl_b:
+    #                 close_brackets += 1
+    #         if open_brackets > close_brackets:
+    #             return -1
+    #         brackets = 0
+    #         for i, char in enumerate(line):
+    #             if char == op_b:
+    #                 brackets += 1
+    #             elif char == cl_b:
+    #                 brackets -= 1
+    #             if brackets < 0:
+    #                 return i+1
+    #     return 0
+
     @staticmethod
     def string70(line: str) -> int:
-        open_brackets = 0
-        close_brackets = 0
-        for op_b, cl_b in (("(", ")"), ("[", "]"), ("{", "}")):
-            for i in line:
-                if i == op_b:
-                    open_brackets += 1
-                elif i == cl_b:
-                    close_brackets += 1
-            if open_brackets > close_brackets:
+        counter = [0, 0, 0]
+        for i, v in enumerate(line):
+            match v:
+                case "(":
+                    counter[0] += 1
+                case ")":
+                    counter[0] -= 1
+                    if counter[0] < 0:
+                        return i+1
+                case "[":
+                    counter[1] += 1
+                case "]":
+                    counter[1] -= 1
+                    if counter[1] < 0:
+                        return i+1
+                case "{":
+                    counter[2] += 1
+                case "}":
+                    counter[2] -= 1
+                    if counter[2] < 0:
+                        return i + 1
+        for i in counter:
+            if i > 0:
                 return -1
-            brackets = 0
-            for i, char in enumerate(line):
-                if char == op_b:
-                    brackets += 1
-                elif char == cl_b:
-                    brackets -= 1
-                if brackets < 0:
-                    return i
         return 0
 
 
+# 3 4 6 7 8 13 18 27 30 31 32 33 36 39 41 42 46 47 53 54 55 57 58 59 60 61 62 66 67 70
 if __name__ == "__main__":
     pass
-    # StringsTask.string3("ы")
-    # StringsTask.string7("easy test")
-    # StringsTask.string13("werw324wfggewt34563gertert")
-    # StringsTask.string18("ПриВет")
-    # StringsTask.string27(3, 4, "Hello", "Кукуtester")
+    # StringsTask.string3("")
+    # StringsTask.string13("werw3204wfggewt34563gertert")
+    # StringsTask.string18("ЁжИк.")
+    # StringsTask.string27(0, 4, "Hello", "Кукуtester")
     # StringsTask.string30("s", "test test", "pop")
-    # StringsTask.string31("Привет всем, друзья!", "все")
+    # StringsTask.string31("Привет всем, друзья!", "всё")
     # StringsTask.string32("ку ку ку", "ку")
-    # StringsTask.string33("Ку ку ку ку хех", "ку")
-    # StringsTask.string36("ну всем пока, друзья", "друзья", "ребята")
-    # StringsTask.string39("message test")
-    # StringsTask.string41("adasd 2rr2  werwerwer    2452345")
-    # StringsTask.string42("ПРИВЕТ ПРИВЕТ КУКУ АДАМ ВУАЛЬ УМЕНИЕ АВРААМ ПОФИГИСТ")
+    # StringsTask.string33("Ку ку ку ку хех", "кE")
+    # StringsTask.string36("друзья, ну всем пока, друзья", "друзья", "ребята")
+    # StringsTask.string39("message test ")
+    # StringsTask.string41("adasd 2rr2      werwerwer    2452345")
+    # StringsTask.string42("ПРИВЕТ ПРИВЕТ КУКУ АДАМА ВУАЛЬ УМЕНИЕ АВРААМ ТПОФИГИСТ")
     # StringsTask.string46("ПРИВЕТ ПРИВЕТ КУКУ АДАМ ВУАЛЬ УМЕНИЕ АВРААМ ПОФИГИСТ")
     # StringsTask.string47("ПРИВЕТ    ПРИВЕТ КУКУ АДАМ ВУАЛЬ       УМЕНИЕ АВРААМ  ПОФИГИСТ")
-    # StringsTask.string54(test_text)
+    # StringsTask.string54("ёуеыаоэяиюЁУЕЫАОЭЯИЮВ")
+    # StringsTask.string55("ПРИВЕТ, ТDОФИГИСТ ПРИВЕТ.КУКУ(АДАМА)ВУАЛЬ УМЕНИЕ \"АВРААМ\"; ТПОФИГИСТ. d")
+    # StringsTask.string61("C:\\\\OpenVPNPortable_1.6.6.paf.exe")
     # StringsTask.string62("абвгдежзийклмнопрстуфхцчшщъыьэюя".upper())
     # StringsTask.string62("абвгдежзийклмнопрстуфхцчшщъыьэюя")
     # x = StringsTask.string66("Программа")
-    # print(StringsTask.string67_1(x))
-    # x = StringsTask.string66("Программа")
     # StringsTask.string67(x)
-    # print(StringsTask.string70("[]][[]"))
+    # StringsTask.string67(x)
+    # print(StringsTask.string70("{{}}(()){}"))
+    # StringsTask.string32("Hello hi hi hihi Hello ihihello", "hi")
+    # StringsTask.string55("Кто,постучал  в   дверь.")
